@@ -4,16 +4,17 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, Clock, MapPin, Bell } from 'lucide-react';
 
 export default function WeddingInvitation() {
-  // State to track if the device is mobile (client-side only)
+  // State to track if the device is mobile and if it's Android
   const [isMobile, setIsMobile] = useState(false);
+  const [isAndroid, setIsAndroid] = useState(false);
 
-  // Check for mobile device on client-side mount
+  // Check for mobile device and Android on client-side mount
   useEffect(() => {
-    const checkMobile = () => {
-      const userAgent = navigator.userAgent;
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-    };
-    setIsMobile(checkMobile());
+    const userAgent = navigator.userAgent;
+    const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    const android = /Android/i.test(userAgent);
+    setIsMobile(mobile);
+    setIsAndroid(android);
   }, []);
 
   // Load Google Fonts via CDN
@@ -39,18 +40,41 @@ export default function WeddingInvitation() {
 
   // Function to create Google Calendar link
   const createGoogleCalendarLink = (event: CalendarEvent): string => {
-    const baseUrl = isMobile
-      ? 'https://calendar.google.com/calendar/u/0/r/eventedit'
-      : 'https://calendar.google.com/calendar/render?action=TEMPLATE';
-    const params = new URLSearchParams({
-      text: event.title,
-      dates: `${event.startDate}/${event.endDate}`,
-      details: event.details,
-      location: event.location,
-      sf: 'true',
-      output: isMobile ? '' : 'xml',
-    });
-    return `${baseUrl}?${params.toString()}`;
+    if (isAndroid) {
+      // Android-specific deep link to open Google Calendar app
+      const startDate = event.startDate.replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/, '$1-$2-$3T$4:$5:$6Z');
+      const endDate = event.endDate.replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/, '$1-$2-$3T$4:$5:$6Z');
+      const params = new URLSearchParams({
+        action: 'TEMPLATE',
+        text: event.title,
+        dates: `${startDate}/${endDate}`,
+        details: event.details,
+        location: event.location,
+        ctz: 'Asia/Kolkata', // Specify timezone for consistency
+      });
+      return `intent://calendar.google.com/calendar/r/eventedit?${params.toString()}#Intent;scheme=https;package=com.google.android.calendar;end`;
+    } else if (isMobile) {
+      // General mobile link (for non-Android mobile devices)
+      const params = new URLSearchParams({
+        text: event.title,
+        dates: `${event.startDate}/${event.endDate}`,
+        details: event.details,
+        location: event.location,
+        sf: 'true',
+      });
+      return `https://calendar.google.com/calendar/u/0/r/eventedit?${params.toString()}`;
+    } else {
+      // Desktop link
+      const params = new URLSearchParams({
+        text: event.title,
+        dates: `${event.startDate}/${event.endDate}`,
+        details: event.details,
+        location: event.location,
+        sf: 'true',
+        output: 'xml',
+      });
+      return `https://calendar.google.com/calendar/render?action=TEMPLATE&${params.toString()}`;
+    }
   };
 
   // Function to create Outlook Calendar link
@@ -77,14 +101,14 @@ export default function WeddingInvitation() {
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
       'BEGIN:VEVENT',
-      `DTSTART:${event.startDate}`,
-      `DTEND:${event.endDate}`,
+      `DTSTART:${event.startDate}Z`,
+      `DTEND:${event.endDate}Z`,
       `SUMMARY:${event.title}`,
       `DESCRIPTION:${event.details}`,
       `LOCATION:${event.location}`,
       'END:VEVENT',
       'END:VCALENDAR',
-    ].join('\n');
+    ].join('\r\n'); // Use \r\n for better ICS compatibility
 
     return `data:text/calendar;charset=utf8,${encodeURI(icsContent)}`;
   };
