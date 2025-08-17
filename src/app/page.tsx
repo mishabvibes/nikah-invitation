@@ -4,17 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, Clock, MapPin, Bell } from 'lucide-react';
 
 export default function WeddingInvitation() {
-  // State to track if the device is mobile and if it's Android
+  // State to track if the device is mobile
   const [isMobile, setIsMobile] = useState(false);
-  const [isAndroid, setIsAndroid] = useState(false);
 
-  // Check for mobile device and Android on client-side mount
+  // Check for mobile device on client-side mount
   useEffect(() => {
-    const userAgent = navigator.userAgent;
-    const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-    const android = /Android/i.test(userAgent);
-    setIsMobile(mobile);
-    setIsAndroid(android);
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent;
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    };
+    setIsMobile(checkMobile());
   }, []);
 
   // Load Google Fonts via CDN
@@ -38,108 +37,68 @@ export default function WeddingInvitation() {
     location: string;
   }
 
-  // Function to create Google Calendar link
+  // Function to create Google Calendar link for desktop
   const createGoogleCalendarLink = (event: CalendarEvent): string => {
-    if (isAndroid) {
-      // Android-specific deep link to open Google Calendar app
-      const startDate = event.startDate.replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/, '$1-$2-$3T$4:$5:$6Z');
-      const endDate = event.endDate.replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/, '$1-$2-$3T$4:$5:$6Z');
-      const params = new URLSearchParams({
-        action: 'TEMPLATE',
-        text: event.title,
-        dates: `${startDate}/${endDate}`,
-        details: event.details,
-        location: event.location,
-        ctz: 'Asia/Kolkata', // Specify timezone for consistency
-      });
-      return `intent://calendar.google.com/calendar/r/eventedit?${params.toString()}#Intent;scheme=https;package=com.google.android.calendar;end`;
-    } else if (isMobile) {
-      // General mobile link (for non-Android mobile devices)
-      const params = new URLSearchParams({
-        text: event.title,
-        dates: `${event.startDate}/${event.endDate}`,
-        details: event.details,
-        location: event.location,
-        sf: 'true',
-      });
-      return `https://calendar.google.com/calendar/u/0/r/eventedit?${params.toString()}`;
-    } else {
-      // Desktop link
-      const params = new URLSearchParams({
-        text: event.title,
-        dates: `${event.startDate}/${event.endDate}`,
-        details: event.details,
-        location: event.location,
-        sf: 'true',
-        output: 'xml',
-      });
-      return `https://calendar.google.com/calendar/render?action=TEMPLATE&${params.toString()}`;
-    }
-  };
-
-  // Function to create Outlook Calendar link
-  const createOutlookCalendarLink = (event: CalendarEvent): string => {
-    const baseUrl = isMobile
-      ? 'ms-outlook://events/new'
-      : 'https://outlook.live.com/calendar/0/deeplink/compose?';
     const params = new URLSearchParams({
-      subject: event.title,
-      startdt: event.startDate,
-      enddt: event.endDate,
-      body: event.details,
+      text: event.title,
+      dates: `${event.startDate}/${event.endDate}`,
+      details: event.details,
       location: event.location,
+      ctz: 'Asia/Kolkata',
+      sf: 'true',
+      output: 'xml',
     });
-    return `${baseUrl}${params.toString()}`;
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&${params.toString()}`;
   };
 
-  // Function to create Apple Calendar link (ICS file for mobile, fallback to Google for desktop)
-  const createAppleCalendarLink = (event: CalendarEvent): string => {
-    if (!isMobile) {
-      return createGoogleCalendarLink(event); // Fallback to Google Calendar for desktop
-    }
+  // Function to create ICS file for mobile devices
+  const createICSCalendarLink = (event: CalendarEvent): string => {
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
+      'PRODID:-//xAI//Wedding Invitation//EN',
+      'BEGIN:VTIMEZONE',
+      'TZID:Asia/Kolkata',
+      'BEGIN:STANDARD',
+      'TZOFFSETFROM:+0530',
+      'TZOFFSETTO:+0530',
+      'TZNAME:IST',
+      'DTSTART:19700101T000000',
+      'END:STANDARD',
+      'END:VTIMEZONE',
       'BEGIN:VEVENT',
-      `DTSTART:${event.startDate}Z`,
-      `DTEND:${event.endDate}Z`,
+      `UID:${crypto.randomUUID()}@xai.com`,
+      `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
+      `DTSTART;TZID=Asia/Kolkata:${event.startDate}`,
+      `DTEND;TZID=Asia/Kolkata:${event.endDate}`,
       `SUMMARY:${event.title}`,
-      `DESCRIPTION:${event.details}`,
+      `DESCRIPTION:${event.details.replace(/\n/g, '\\n')}`,
       `LOCATION:${event.location}`,
       'END:VEVENT',
       'END:VCALENDAR',
-    ].join('\r\n'); // Use \r\n for better ICS compatibility
+    ].join('\r\n');
 
-    return `data:text/calendar;charset=utf8,${encodeURI(icsContent)}`;
+    return `data:text/calendar;charset=utf8,${encodeURIComponent(icsContent)}`;
   };
 
-  // Component for calendar buttons
-  const CalendarButtons = ({ event, className = '' }: { event: CalendarEvent; className?: string }) => (
+  // Function to determine the appropriate calendar link
+  const createCalendarLink = (event: CalendarEvent): string => {
+    return isMobile ? createICSCalendarLink(event) : createGoogleCalendarLink(event);
+  };
+
+  // Component for calendar button
+  const CalendarButton = ({ event, className = '' }: { event: CalendarEvent; className?: string }) => (
     <div className={`flex flex-col gap-2 ${className}`}>
-      <button
-        onClick={() => window.open(createGoogleCalendarLink(event), '_blank')}
+      <a
+        href={createCalendarLink(event)}
+        download={isMobile ? `${event.title.replace(/[^a-zA-Z0-9]/g, '_')}.ics` : undefined}
+        target={isMobile ? '_self' : '_blank'}
         className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm transition-colors font-medium"
         style={{ fontFamily: 'Playfair Display, serif' }}
       >
         <Calendar size={16} />
-        Add to {isMobile ? 'Calendar' : 'Google Calendar'}
-      </button>
-      <div className="flex gap-2">
-        <button
-          onClick={() => window.open(createOutlookCalendarLink(event), '_blank')}
-          className="flex items-center justify-center gap-1 bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded text-xs transition-colors flex-1"
-          style={{ fontFamily: 'Playfair Display, serif' }}
-        >
-          Outlook
-        </button>
-        <button
-          onClick={() => window.open(createAppleCalendarLink(event), '_blank')}
-          className="flex items-center justify-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded text-xs transition-colors flex-1"
-          style={{ fontFamily: 'Playfair Display, serif' }}
-        >
-          Apple
-        </button>
-      </div>
+        Add to Calendar
+      </a>
     </div>
   );
 
@@ -238,7 +197,7 @@ export default function WeddingInvitation() {
               By the grace of Allah, we are blessed to share this joyous occasion with you as two hearts unite as one.
             </p>
             <p className="text-sm text-gray-700 leading-relaxed" style={{ fontFamily: 'Playfair Display, serif' }}>
-              With immense pleasure, we invite you to witness and celebrate our sacred union in the blessed bond of Nikah.
+              With immense pleasure, we invite you to witness and celebrate our sacred union in the blessed bond of marriage.
             </p>
           </div>
 
@@ -428,7 +387,7 @@ export default function WeddingInvitation() {
                 >
                   Navigate
                 </a>
-                <CalendarButtons event={nikahEvent} />
+                <CalendarButton event={nikahEvent} />
               </div>
             </div>
           </div>
@@ -472,7 +431,7 @@ export default function WeddingInvitation() {
                 >
                   Navigate
                 </a>
-                <CalendarButtons event={walimaEvent} />
+                <CalendarButton event={walimaEvent} />
               </div>
             </div>
           </div>
