@@ -17,7 +17,15 @@ export default function WeddingInvitation() {
   }, []);
 
   // Function to create Google Calendar link
-  const createGoogleCalendarLink = (event) => {
+  interface CalendarEvent {
+    title: string;
+    startDate: string;
+    endDate: string;
+    details: string;
+    location: string;
+  }
+
+  const createGoogleCalendarLink = (event: CalendarEvent): string => {
     const baseUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE';
     const params = new URLSearchParams({
       text: event.title,
@@ -48,7 +56,15 @@ export default function WeddingInvitation() {
   };
 
   // Function to create Outlook Calendar link
-  const createOutlookCalendarLink = (event) => {
+  interface OutlookCalendarEvent {
+    title: string;
+    startDate: string;
+    endDate: string;
+    details: string;
+    location: string;
+  }
+
+  const createOutlookCalendarLink = (event: OutlookCalendarEvent): string => {
     const baseUrl = 'https://outlook.live.com/calendar/0/deeplink/compose?';
     const params = new URLSearchParams({
       subject: event.title,
@@ -61,7 +77,9 @@ export default function WeddingInvitation() {
   };
 
   // Component for calendar buttons
-  const CalendarButtons = ({ event, className = "" }) => (
+  const CalendarButtons = (
+    { event, className = "" }: { event: CalendarEvent; className?: string }
+  ) => (
     <div className={`flex flex-col gap-2 ${className}`}>
       <button
         onClick={() => window.open(createGoogleCalendarLink(event), '_blank')}
