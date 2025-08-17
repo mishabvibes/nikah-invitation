@@ -36,30 +36,50 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: 'Thahseena & Fayis - Save the Date',
-  description: 'Join us in celebrating our sacred union in the blessed bond of Nikah - September 4, 2025',
-  keywords: ['wedding', 'nikah', 'islamic wedding', 'save the date', 'Thahseena', 'Fayis'],
-  authors: [{ name: 'Thahseena & Fayis' }],
+  title: 'Thahseena & Fayis Wedding - Save the Date | Nikah Ceremony 2025',
+  description: 'Join Thahseena and Fayis in celebrating their sacred Nikah ceremony on September 4, 2025. Explore wedding details, RSVP, and more!',
+  keywords: ['Thahseena and Fayis wedding', 'Nikah ceremony 2025', 'Islamic wedding', 'save the date', 'wedding invitation', 'September 2025 wedding'],
+  authors: [{ name: 'Thahseena & Fayis', url: 'https://thahseena-fayis-wedding.com' }],
+  creator: 'Thahseena & Fayis Wedding Team',
+  publisher: 'Thahseena & Fayis Wedding',
   openGraph: {
-    title: 'Thahseena & Fayis - Save the Date',
-    description: 'Join us in celebrating our sacred union in the blessed bond of Nikah - September 4, 2025',
+    title: 'Thahseena & Fayis Wedding - Save the Date | Nikah Ceremony 2025',
+    description: 'Join Thahseena and Fayis in celebrating their sacred Nikah ceremony on September 4, 2025. Explore wedding details, RSVP, and more!',
+    url: 'https://thahseena-fayis-wedding.com',
     type: 'website',
     locale: 'en_US',
     siteName: 'Thahseena & Fayis Wedding',
+    images: [
+      {
+        url: 'https://thahseena-fayis-wedding.com/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Thahseena and Fayis Wedding Invitation',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Thahseena & Fayis - Save the Date',
-    description: 'Join us in celebrating our sacred union in the blessed bond of Nikah - September 4, 2025',
+    title: 'Thahseena & Fayis Wedding - Save the Date | Nikah Ceremony 2025',
+    description: 'Join Thahseena and Fayis in celebrating their sacred Nikah ceremony on September 4, 2025. Explore wedding details, RSVP, and more!',
+    images: ['https://thahseena-fayis-wedding.com/og-image.jpg'],
+    creator: '@ThahseenaFayis',
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   viewport: {
     width: 'device-width',
     initialScale: 1,
-    maximumScale: 1,
+    maximumScale: 5,
   },
   icons: {
     icon: [
@@ -71,12 +91,12 @@ export const metadata: Metadata = {
     apple: [
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
-    other: [
-      {
-        rel: 'mask-icon',
-        url: '/safari-pinned-tab.svg', // Add this file if you have it, otherwise omit
-      },
-    ],
+  },
+  alternates: {
+    canonical: 'https://thahseena-fayis-wedding.com',
+    languages: {
+      'en-US': 'https://thahseena-fayis-wedding.com/en-US',
+    },
   },
 };
 
