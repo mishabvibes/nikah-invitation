@@ -97,10 +97,10 @@ export default function WeddingInvitation() {
             {/* Couple Names */}
             <div className="mb-8">
               <h2 className={`text-3xl text-emerald-700 mb-2 leading-tight ${dancingScript.className} font-semibold`}>
-                Thahseena Kamaliya & Muhammad Fayis Wafy
+                Thahseena & Fayis
               </h2>
               <p className={`text-lg text-amber-600 mb-2 ${ebGaramond.className} font-medium`}>
-                فاطمة تحسينة قمالية ومحمد فايس وافي
+                فاطمة تحسينة ومحمد فايس
               </p>
               <p className={`text-sm uppercase tracking-widest text-gray-500 ${cormorantGaramond.className} font-medium`}>
                 ARE GETTING MARRIED
