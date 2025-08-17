@@ -291,7 +291,7 @@ export default function WeddingInvitation() {
                   className="inline-block bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-full text-sm uppercase tracking-wide transition-colors font-medium"
                   style={{fontFamily: 'Playfair Display, serif'}}
                 >
-                  VIEW ON MAP
+                  Navigate
                 </a>
                 <CalendarButtons event={nikahEvent} />
               </div>
@@ -337,7 +337,7 @@ export default function WeddingInvitation() {
                   className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-full text-sm uppercase tracking-wide transition-colors font-medium"
                   style={{fontFamily: 'Playfair Display, serif'}}
                 >
-                  VIEW ON MAP
+                  Navigate
                 </a>
                 <CalendarButtons event={walimaEvent} />
               </div>
