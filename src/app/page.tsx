@@ -16,10 +16,10 @@ export default function WeddingInvitation() {
     setIsMobile(checkMobile());
   }, []);
 
-  // Load Google Fonts via CDN
+  // Load Google Fonts via CDN with Amiri for Arabic text
   useEffect(() => {
     const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@400;500;600;700&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
 
@@ -126,7 +126,7 @@ export default function WeddingInvitation() {
         <div className="bg-white rounded-3xl shadow-lg p-8 mb-6">
           {/* Bismillah Header */}
           <div className="text-center mb-6">
-            <p className="text-lg text-emerald-700 mb-2 font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>
+            <p className="text-lg text-emerald-700 mb-2 font-medium" style={{ fontFamily: 'Amiri, serif' }}>
               بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
             </p>
             <p className="text-xs text-gray-600 italic" style={{ fontFamily: 'Playfair Display, serif' }}>
@@ -140,46 +140,48 @@ export default function WeddingInvitation() {
               Save The Date
             </h1>
 
-            {/* Date with Images */}
-            <div className="flex justify-center items-center gap-1 mb-6">
-              <div className="relative">
-                <div className="w-16 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg overflow-hidden shadow-md">
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-300/30 to-transparent"></div>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-white drop-shadow-lg" style={{ fontFamily: 'Playfair Display, serif' }}>
-                    04
-                  </span>
-                </div>
-              </div>
-              <div className="relative">
-                <div className="w-16 h-20 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg overflow-hidden shadow-md">
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-300/30 to-transparent"></div>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-white drop-shadow-lg" style={{ fontFamily: 'Playfair Display, serif' }}>
-                    10
-                  </span>
-                </div>
-              </div>
-              <div className="relative">
-                <div className="w-16 h-20 bg-gradient-to-br from-emerald-500 to-amber-500 rounded-lg overflow-hidden shadow-md">
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-300/30 to-transparent"></div>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-white drop-shadow-lg" style={{ fontFamily: 'Playfair Display, serif' }}>
-                    25
-                  </span>
-                </div>
-              </div>
-            </div>
+            {/* Date with Professional Highlighted Design */}
+<div className="flex justify-center items-center gap-4 mb-6">
+  <div className="text-center">
+    <div className="w-12 h-12 bg-emerald-600  rounded-lg flex items-center justify-center ">
+      <span className="text-2xl font-bold text-white" style={{ fontFamily: 'Playfair Display, serif' }}>
+        04
+      </span>
+    </div>
+    <p className="text-xs text-gray-600 mt-2 uppercase tracking-wide font-semibold" style={{ fontFamily: 'Playfair Display, serif' }}>
+      Day
+    </p>
+  </div>
+  
+  <div className="text-center">
+    <div className="w-12 h-12 bg-emerald-600  rounded-lg flex items-center justify-center ">
+      <span className="text-2xl font-bold text-white" style={{ fontFamily: 'Playfair Display, serif' }}>
+        10
+      </span>
+    </div>
+    <p className="text-xs text-gray-600 mt-2 uppercase tracking-wide font-semibold" style={{ fontFamily: 'Playfair Display, serif' }}>
+      Month
+    </p>
+  </div>
+  
+  <div className="text-center">
+    <div className="w-12 h-12 bg-emerald-600  rounded-lg flex items-center justify-center ">
+      <span className="text-2xl font-bold text-white" style={{ fontFamily: 'Playfair Display, serif' }}>
+        25
+      </span>
+    </div>
+    <p className="text-xs text-gray-600 mt-2 uppercase tracking-wide font-semibold" style={{ fontFamily: 'Playfair Display, serif' }}>
+      Year
+    </p>
+  </div>
+</div>
 
             {/* Couple Names */}
             <div className="mb-8">
               <h2 className="text-3xl text-emerald-700 mb-2 leading-tight font-semibold" style={{ fontFamily: 'Dancing Script, cursive' }}>
                 Thahseena & Fayis
               </h2>
-              <p className="text-lg text-amber-600 mb-2 font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>
+              <p className="text-lg text-amber-600 mb-2 font-medium" style={{ fontFamily: 'Amiri, serif' }}>
                 فاطمة تحسينة ومحمد فايس
               </p>
               <p className="text-sm uppercase tracking-widest text-gray-600 font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>
@@ -438,7 +440,7 @@ export default function WeddingInvitation() {
 
           {/* Islamic Quote */}
           <div className="mb-8 bg-gradient-to-r from-emerald-50 to-amber-50 rounded-lg p-4 border-l-4 border-emerald-500">
-            <p className="text-sm text-emerald-700 text-center mb-2 font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>
+            <p className="text-sm text-emerald-700 text-center mb-2 font-medium" style={{ fontFamily: 'Amiri, serif' }}>
               "وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا"
             </p>
             <p className="text-xs text-gray-600 text-center italic" style={{ fontFamily: 'Playfair Display, serif' }}>
@@ -461,9 +463,8 @@ export default function WeddingInvitation() {
 
           {/* Islamic Dua */}
           <div className="text-center mb-6 bg-emerald-50 rounded-lg p-4">
-            <p className="text-sm text-emerald-700 mb-2 font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>
-              بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ
-            </p>
+            <p className="text-sm text-emerald-700 mb-2 font-medium" style={{ fontFamily: 'Amiri, serif' }}>
+              بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ            </p>
             <p className="text-xs text-gray-600 italic" style={{ fontFamily: 'Playfair Display, serif' }}>
               "May Allah bless you, shower His blessings upon you, and bring you together in goodness"
             </p>
@@ -477,7 +478,7 @@ export default function WeddingInvitation() {
             <p className="text-2xl text-emerald-700 mb-2 font-semibold" style={{ fontFamily: 'Dancing Script, cursive' }}>
               Thahseena & Fayis
             </p>
-            <p className="text-lg text-amber-600 font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>
+            <p className="text-lg text-amber-600 font-medium" style={{ fontFamily: 'Amiri, serif' }}>
               تحسينة وفايس
             </p>
           </div>
